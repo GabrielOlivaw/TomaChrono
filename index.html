@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="css/index.css">
+  <link rel="icon" type="image/png" href="img/tomachrono-favicon.png">
+  <title>TomaChrono</title>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <img src="img/tomachrono-logo.png" />
+      <h1><span class="pomodoroTitle1">Toma</span><span class="pomodoroTitle2">Chrono</span></h1>
+    </header>
+    <main>
+      <div class="pomodoroTimers">
+        <div class="pomodoroTimer middleTimer">
+          <h2>Pomodoro</h2>
+          <h2 id="pomodoroTimerText" name="Pomodoro" class="timerText">25:00</h2>
+        </div>
+        <div class="breakTimer leftTimer">
+          <h2>Break</h2>
+          <h2 id="breakTimerText" name="Break" class="timerText">5:00</h2>
+        </div>
+        <div class="longBreakTimer rightTimer">
+          <h2>Long Break</h2>
+          <h2 id="longBreakTimerText" name="Long Break" class="timerText">15:00</h2>
+        </div>
+      </div>
+      <div id="timerControls">
+        <button id="timerStart" class="button">Start</button>
+        <button id="timerStop" class="button">Stop</button>
+        <button id="timerReset" class="button">Reset</button>
+        <button id="timerSkip" class="button">Skip</button>
+      </div>
+      <div id="timerOperationFields">
+        <select id="timerOperation" class="button">
+          <option value="+">+</option>
+          <option value="-">-</option>
+        </select>
+        <button id="timer1Minute" class="button">1'</button>
+        <button id="timer5Minute" class="button">5'</button>
+        <button id="timer30Second" class="button">30''</button>
+      </div>
+      <div id="timerSetFields">
+        <button id="timerSet" class="button">Set default</button>
+      </div>
+      <div id="resetAllDefaults">
+        <button id="timerResetAllDefaults" class="button">Reset all defaults</button>
+      </div>
+      <p>Pomodoros: <span id="pomodoroCount">0</span></p>
+      <div id="resetPomodoroCount">
+        <button id="timerResetPomodoroCount" class="button">Reset count</button>
+      </div>
+    </main>
+    <footer style="margin-top: 5%">
+      <span style="font-size: 0.7em;"><script>document.write(new Date().getFullYear())</script></span>
+      <a href="https://www.github.com/GabrielOlivaw" target="_blank" noopener noreferrer>Gabriel Aguilar</a>
+    </footer>
+  </div>
+
+  <script src="js/pomodoro.js" type="module"></script>
+</body>
+</html>
