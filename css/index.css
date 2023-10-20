@@ -129,3 +129,9 @@ h1, h2, #pomodoroTimerText, p {
   }
   
 }
+
+@media (max-width: 500px) {
+  .container {
+    width: 70%;
+  }
+}
