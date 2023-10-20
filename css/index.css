@@ -130,8 +130,27 @@ h1, h2, #pomodoroTimerText, p {
   
 }
 
-@media (max-width: 500px) {
+@media (max-width: 660px) {
   .container {
-    width: 70%;
+    width: 80%;
+  }
+
+  header img {
+    width: 80px;
+    height: 80px;
+  }
+
+  header h1 {
+    font-size: 1.5em;
+  }
+
+  .leftTimer {
+    top: -30px;
+    left: -10px;
+  }
+
+  .rightTimer {
+    top: -30px;
+    right: -10px;
   }
 }
