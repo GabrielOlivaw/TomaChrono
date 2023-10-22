@@ -1,6 +1,7 @@
 import Timer from "./Timer.js";
 
 let isTimerSetInputsOpened = false;
+let audioAlert = new Audio('res/audio/tic-tac.mp3');
 
 const pomodoroTimer = new Timer({
   isPomodoroTimer: true,
@@ -9,6 +10,9 @@ const pomodoroTimer = new Timer({
   timerTextElement: document.getElementById('pomodoroTimerText'),
   onTimerStep: (strTimer, timerTextElement) => {
     drawTimer(strTimer, timerTextElement);
+  },
+  onTimerNotifyNext: () => {
+    notifyNextTimer();
   },
   onTimerFinish: () => {
     finishCurrentTimer();
@@ -22,6 +26,9 @@ const breakTimer = new Timer({
   onTimerStep: (strTimer, timerTextElement) => {
     drawTimer(strTimer, timerTextElement);
   },
+  onTimerNotifyNext: () => {
+    notifyNextTimer();
+  },
   onTimerFinish: () => {
     finishCurrentTimer();
   }
@@ -34,6 +41,9 @@ const longBreakTimer = new Timer({
   onTimerStep: (strTimer, timerTextElement) => {
     drawTimer(strTimer, timerTextElement);
   },
+  onTimerNotifyNext: () => {
+    notifyNextTimer();
+  },
   onTimerFinish: () => {
     finishCurrentTimer();
   }
@@ -42,6 +52,11 @@ const longBreakTimer = new Timer({
 let currentTimer = pomodoroTimer;
 
 let pomodoroCount = 0;
+
+function timerReset() {
+  currentTimer.timerReset();
+  notifyNextTimer();
+}
 
 function timerSetDefaultTime() {
   let minutes = parseInt(document.getElementById('timerSetDefaultMinutes').value);
@@ -65,6 +80,8 @@ function timerSetDefaultTime() {
     localStorage.setItem(localStorageName, JSON.stringify({ minutes, seconds }));
 
     timerSetResetInputs();
+
+    notifyNextTimer();
   }
 }
 
@@ -119,23 +136,48 @@ function timer1Minute() {
   let operation = document.getElementById('timerOperation').value;
 
   (operation == '+') ? currentTimer.timerPlus1Minute() : currentTimer.timerMinus1Minute();
+
+  notifyNextTimer();
 }
 
 function timer5Minute() {
   let operation = document.getElementById('timerOperation').value;
 
   (operation == '+') ? currentTimer.timerPlus5Minute() : currentTimer.timerMinus5Minute();
+
+  notifyNextTimer();
 }
 
 function timer30Second() {
   let operation = document.getElementById('timerOperation').value;
 
   (operation == '+') ? currentTimer.timerPlus30Second() : currentTimer.timerMinus30Second();
+
+  notifyNextTimer();
 }
 
 function drawTimer(strTimer, timerTextElement) {
   timerTextElement.innerText = strTimer;
   document.title = `${strTimer} - ${timerTextElement.attributes.name.value}`;
+}
+
+function notifyNextTimer() {
+  if (currentTimer.timerMinutes > 0 || (currentTimer.timerMinutes == 0 && currentTimer.timerSeconds > 10)) {
+    // Reset 10 seconds notification
+    // Visual notification
+    document.body.style.backgroundColor = 'transparent';
+
+    // Audio notification
+    audioAlert.pause();
+  }
+  else if (currentTimer.timerMinutes == 0 && currentTimer.timerSeconds <= 10) {
+    // Notify current timer end 10 seconds before finishing
+    // Visual notification
+    document.body.style.backgroundColor = '#FFDBAA';
+
+    // Audio notification
+    audioAlert.play();
+  }
 }
 
 function finishCurrentTimer() {
@@ -183,6 +225,8 @@ function finishCurrentTimer() {
   }
   currentTimer.timerReset();
   currentTimer.timerStart();
+
+  notifyNextTimer();
 }
 
 function skipCurrentTimer() {
@@ -203,6 +247,8 @@ function resetAllDefaultTimers() {
 
     initTimerText();
     currentTimer.drawTimer();
+
+    notifyNextTimer();
   }
 }
 
@@ -224,12 +270,14 @@ function resetPomodoroCount() {
   currentTimer.timerReset();
   currentTimer = pomodoroTimer;
   resetTimersPositions();
+
+  notifyNextTimer();
 }
 
 function initListeners() {
   document.getElementById('timerStart').onclick = () => { currentTimer.timerStart(); };
   document.getElementById('timerStop').onclick = () => { currentTimer.timerStop(); };
-  document.getElementById('timerReset').onclick = () => { currentTimer.timerReset(); };
+  document.getElementById('timerReset').onclick = () => { timerReset(); };
   document.getElementById('timerSkip').onclick = () => { skipCurrentTimer(); };
 
   document.getElementById('timer1Minute').onclick = timer1Minute;

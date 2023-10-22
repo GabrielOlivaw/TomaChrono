@@ -1,7 +1,7 @@
 export default class Timer {
 
   constructor({ isPomodoroTimer = false, timerDefaultMinutes, timerDefaultSeconds,
-    timerTextElement, onTimerStep, onTimerFinish }) {
+    timerTextElement, onTimerStep, onTimerNotifyNext, onTimerFinish }) {
     
     this.timerRunning = false;
 
@@ -16,6 +16,7 @@ export default class Timer {
 
     this.onTimerStep = (strTimer, textElement) => { onTimerStep(strTimer, textElement) }
     this.onTimerFinish = () => { onTimerFinish() }
+    this.onTimerNotifyNext = () => { onTimerNotifyNext() }
 
     this.advanceTimer = this.advanceTimer.bind(this);
   }
@@ -63,6 +64,10 @@ export default class Timer {
     }
     else {
       this.timerSeconds--;
+    }
+
+    if (this.timerMinutes == 0 && this.timerSeconds == 10) {
+      this.onTimerNotifyNext();
     }
 
     this.drawTimer();
